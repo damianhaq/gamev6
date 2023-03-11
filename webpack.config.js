@@ -13,14 +13,12 @@ module.exports = {
     ],
   },
   output: {
-    publicPath: "auto",
+    // publicPath: "auto",
     filename: "bundle.js",
-    path: path.resolve(__dirname, "public"),
+    path: path.resolve(__dirname, "docs"),
   },
-  // devServer: {
-  //   static: "./public",
-  //   port: 4200,
-  //   hot: false,
-  //   liveReload: true,
-  // },
+  devServer: {
+    port: 8080,
+    static: "./docs",
+  },
 };
