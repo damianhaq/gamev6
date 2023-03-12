@@ -20,6 +20,9 @@ module.exports = {
   },
   devServer: {
     port: 8080,
-    static: "./docs",
+    static: path.join(__dirname, "docs"),
+  },
+  resolve: {
+    extensions: [".ts", ".js", ".json"],
   },
 };
