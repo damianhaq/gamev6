@@ -1,9 +1,13 @@
 import { Player } from "./classes/Player";
 
 export const maps = {
+  jsonFile: null as TiledMap | null,
   map1: {
-    jsonFile: null as TiledMap | null,
-    mapToArray: null as number[][] | null,
+    layers: [] as any,
+  },
+  mapPosition: {
+    x: 0,
+    y: 0,
   },
 };
 

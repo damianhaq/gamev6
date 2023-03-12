@@ -3,10 +3,10 @@ import { instances, maps, spriteSheet } from "./variable";
 import gamev6map from "./map/gamev6map.json";
 import { initial } from "./initial/initial";
 import { update } from "./update/update";
-maps.map1.jsonFile = gamev6map;
+maps.jsonFile = gamev6map;
 
 const p = document.querySelector("#p") as HTMLParagraphElement;
-const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
+export const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
 export const c = canvas.getContext("2d") as CanvasRenderingContext2D;
 
 // Style
