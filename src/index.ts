@@ -14,8 +14,10 @@ export const c = canvas.getContext("2d") as CanvasRenderingContext2D;
 // Style
 document.body.style.margin = "0";
 canvas.style.border = "1px solid black";
-canvas.width = 1920;
-canvas.height = 1080;
+canvas.width = window.innerWidth - 10;
+canvas.height = window.innerHeight - 100;
+// canvas.width = 1920;
+// canvas.height = 1080;
 
 // Initial
 initial();

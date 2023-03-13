@@ -30,7 +30,12 @@ export function drawMap(cells: number) {
 
   for (let row = playerCellPos.y - cells; row < playerCellPos.y + cells; row++) {
     for (let cell = playerCellPos.x - cells; cell < playerCellPos.x + cells; cell++) {
-      if (row >= 0 && cell >= 0) {
+      if (
+        row >= 0 &&
+        cell >= 0 &&
+        row < maps[maps.currentMap].jsonFile.height &&
+        cell < maps[maps.currentMap].jsonFile.width
+      ) {
         for (let layer = 0; layer < maps[maps.currentMap].layers.length; layer++) {
           const id = maps[maps.currentMap].layers[layer][row][cell];
           const cords = tilesetIdToCoords(id);
