@@ -1,9 +1,11 @@
 import { Player } from "./classes/Player";
-import { instances, maps, spriteSheet } from "./variable";
-import gamev6map from "./map/gamev6map.json";
+import { instances, maps } from "./variable";
 import { initial } from "./initial/initial";
 import { update } from "./update/update";
-maps.jsonFile = gamev6map;
+// import gamev6map from "./map/gamev6map.json";
+// maps.map1.jsonFile = gamev6map;
+// import map2 from "./map/map2.json";
+// maps.jsonFile = gamev6map;
 
 const p = document.querySelector("#p") as HTMLParagraphElement;
 export const canvas = document.querySelector("#canvas") as HTMLCanvasElement;
@@ -22,18 +24,23 @@ initial();
 
 let lastTime = 0;
 let deltaTime = 0;
+let counter = 0;
 
 function animate(currentTime: number) {
   deltaTime = currentTime - lastTime;
   lastTime = currentTime;
+  counter++;
 
-  p.innerHTML = `delta time: ${deltaTime}   player x cell: ${Math.ceil(
-    instances.player.x / 32
-  )} instances.player x ${instances.player.x}`;
+  if (counter > 100) {
+    p.innerHTML = `delta time: ${deltaTime.toFixed(2)}   player x cell: ${Math.ceil(
+      instances.player.x / 32
+    )} instances.player x ${instances.player.x}`;
+    counter = 0;
+  }
 
   c.clearRect(0, 0, canvas.width, canvas.height);
 
-  update();
+  update(deltaTime);
 
   // c.drawImage(spriteSheet, 0, 0);
   // c.arc(100, 100, 30, 0, Math.PI * 2);
