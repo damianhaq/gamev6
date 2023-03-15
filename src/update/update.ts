@@ -1,5 +1,9 @@
 import { c } from "..";
-import { drawCellOnPosition, tilesetIdToCoords } from "../functions/map";
+import {
+  drawCellOnPosition,
+  getPositionPixelToTile_,
+  tilesetIdToCoords,
+} from "../functions/map";
 import { instances, maps } from "../variable";
 
 export function update(deltaTime: number) {
@@ -23,13 +27,14 @@ function drawObjects() {
 }
 
 export function drawMap(cells: number) {
-  const playerCellPos = {
-    x: Math.ceil(instances.player.x / 32),
-    y: Math.ceil(instances.player.y / 32),
-  };
+  const playerCellPos = getPositionPixelToTile_(instances.player.x, instances.player.y);
 
-  for (let row = playerCellPos.y - cells; row < playerCellPos.y + cells; row++) {
-    for (let cell = playerCellPos.x - cells; cell < playerCellPos.x + cells; cell++) {
+  for (let row = playerCellPos.tileY - cells; row < playerCellPos.tileY + cells; row++) {
+    for (
+      let cell = playerCellPos.tileX - cells;
+      cell < playerCellPos.tileX + cells;
+      cell++
+    ) {
       if (
         row >= 0 &&
         cell >= 0 &&
