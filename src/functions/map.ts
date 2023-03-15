@@ -71,3 +71,7 @@ export function drawRect(x: number, y: number, w: number, h: number) {
   c.rect(x + maps.mapPosition.x, y + maps.mapPosition.y, w, h);
   c.stroke();
 }
+
+export function drawText(x: number, y: number, text: string) {
+  c.fillText(text, x + maps.mapPosition.x, y + maps.mapPosition.y);
+}

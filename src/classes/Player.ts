@@ -3,6 +3,7 @@ import {
   changeMap_,
   drawLine,
   drawRect,
+  drawText,
   getChunk_,
   getPositionPixelToTile_,
   isTileCollide_,
@@ -15,14 +16,18 @@ export class Player {
   collisions: { tileX: number; tileY: number }[];
   currentChunk: { chunkX: number; chunkY: number };
   isCollide: boolean;
-  lastX: number;
-  lastY: number;
+  // lastX: number;
+  // lastY: number;
+  dx: number;
+  dy: number;
 
   constructor(public x: number, public y: number, public radius: number) {
     this.x = x;
     this.y = y;
-    this.lastX = x;
-    this.lastY = y;
+    // this.lastX = x;
+    // this.lastY = y;
+    this.dx = 0;
+    this.dy = 0;
     this.radius = radius;
 
     this.speed = 2;
@@ -32,6 +37,74 @@ export class Player {
   }
 
   update(dt: number) {
+    this.drawMe();
+
+    // Moving ------------------------
+
+    // set direction
+    if (keys.w || keys.s || keys.a || keys.d) {
+      if (keys.w) {
+        this.dy = -this.speed;
+      } else if (keys.s) {
+        this.dy = this.speed;
+      }
+      if (keys.a) {
+        this.dx = -this.speed;
+      } else if (keys.d) {
+        this.dx = this.speed;
+      }
+      this.checkCollision();
+    } else {
+      this.dx = 0;
+      this.dy = 0;
+      this.isCollide = false;
+    }
+
+    // if direction then move
+    if (this.dx > 0 && !this.isCollide) this.x += this.speed;
+    if (this.dx < 0 && !this.isCollide) this.x -= this.speed;
+    if (this.dy > 0 && !this.isCollide) this.y += this.speed;
+    if (this.dy < 0 && !this.isCollide) this.y -= this.speed;
+
+    // if (keys.w) this.y -= this.speed;
+    // if (keys.s) this.y += this.speed;
+    // if (keys.a) this.x -= this.speed;
+    // if (keys.d) this.x += this.speed;
+
+    //Camera
+    maps.mapPosition.x = this.x * -1 + canvas.width / 2;
+    maps.mapPosition.y = this.y * -1 + canvas.height / 2;
+
+    this.teleport();
+
+    this.loadCollisionTilesInChunk();
+    this.showCollisions();
+
+    // this.checkCollision();
+  }
+
+  checkCollision() {
+    this.collisions.forEach((tile) => {
+      if (
+        this.x + this.dx + this.radius > tile.tileX * 32 &&
+        this.x + this.dx - this.radius < tile.tileX * 32 + 32 &&
+        this.y + this.dy - this.radius < tile.tileY * 32 + 32 &&
+        this.y + this.dy + this.radius > tile.tileY * 32
+      ) {
+        this.isCollide = true;
+      } else {
+        // this.isCollide = false;
+      }
+    });
+  }
+
+  // checkCollision(side: "top" | "bottom" | "left" | "right"):boolean {
+  //   if (side === "top") {
+
+  //   }
+  // }
+
+  drawMe() {
     c.imageSmoothingEnabled = false;
     c.drawImage(
       spriteSheet,
@@ -55,56 +128,11 @@ export class Player {
     );
     c.stroke();
 
-    // Moving
-
-    if (!this.isCollide) {
-      this.lastX = this.x;
-      this.lastY = this.y;
-
-      if (keys.w) this.y -= this.speed;
-      if (keys.s) this.y += this.speed;
-      if (keys.a) this.x -= this.speed;
-      if (keys.d) this.x += this.speed;
-    } else {
-      this.x = this.lastX;
-      this.y = this.lastY;
-      this.isCollide = false;
-    }
-
-    //Camera
-    maps.mapPosition.x = this.x * -1 + canvas.width / 2;
-    maps.mapPosition.y = this.y * -1 + canvas.height / 2;
-
-    this.teleport();
-
-    this.loadCollisionTilesInChunk();
-    this.showCollisions();
-
-    this.checkCollision();
+    drawText(this.x, this.y + 40, `${this.isCollide}`);
   }
-
-  checkCollision() {
-    this.collisions.forEach((tile) => {
-      if (
-        this.x + this.radius > tile.tileX * 32 &&
-        this.x - this.radius < tile.tileX * 32 + 32 &&
-        this.y - this.radius < tile.tileY * 32 + 32 &&
-        this.y + this.radius > tile.tileY * 32
-      ) {
-        this.isCollide = true;
-      }
-    });
-  }
-
-  // checkCollision(side: "top" | "bottom" | "left" | "right"):boolean {
-  //   if (side === "top") {
-
-  //   }
-  // }
-
   showCollisions() {
     this.collisions.forEach((tile) => {
-      drawLine(this.x, this.y, tile.tileX * 32, tile.tileY * 32);
+      // drawLine(this.x, this.y, tile.tileX * 32, tile.tileY * 32);
       drawRect(tile.tileX * 32, tile.tileY * 32, 32, 32);
     });
   }
